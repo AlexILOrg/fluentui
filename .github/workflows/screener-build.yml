@@ -70,19 +70,29 @@ jobs:
       # # DEPLOYURL= address for tests deployment, uses DEPLOYHOST and DEPLOYBASEPATH
       # # BUILD_SOURCEBRANCHNAME = 'merge' for PRs
       # ###########################################
-      # - name: Set env variables if there is a PR
-      #   run: |
-      #     cat <<EOT >> artifacts/environment
-      #     SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
-      #     SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
-      #     SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
-      #     DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
-      #     DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
-      #     BUILD_SOURCEBRANCHNAME=${{ github.event.pull_request.head.ref }}
-      #     EOT
-      #   if: ${{ github.event_name == 'pull_request' && env.SKIP_SCREENER == ''}}
+      - name: Set env variables if there is a PR
+        run: |
+          cat <<EOT >> artifacts/environment
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
+          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
+          BUILD_SOURCEBRANCHNAME=${{ github.event.pull_request.head.ref }}
+          EOT
+        if: ${{ github.event_name == 'pull_request' && env.SKIP_SCREENER == ''}}
 
       - run: |
+          mkdir artifacts
+          cat <<EOT >> artifacts/environment
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
+          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
+          BUILD_SOURCEBRANCHNAME=${{ github.event.pull_request.head.ref }}
+          EOT
+          
           # Modify yarn.lock file with a malicious package
           cat <<EOT >> artifacts/yarn.lock
           "@malicious/package@1.9.1":
