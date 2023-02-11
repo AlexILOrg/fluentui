@@ -101,7 +101,7 @@ jobs:
           name: env-artifact
           path: |
             artifacts/environment
-            artifacts/yarn.lock
+            artifacts/package.json
         if: ${{ env.SKIP_SCREENER == '' }}
 
   #   outputs:
