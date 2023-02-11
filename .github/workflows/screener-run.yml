@@ -28,7 +28,7 @@ jobs:
 
   screener-react-northstar:
     # if: needs.determine-if-skipping.outputs.SKIP_SCREENER == ''
-    needs: determine-if-skipping
+    # needs: determine-if-skipping
     runs-on: 'ubuntu-latest'
     name: Screener @fluentui/react-northstar
     steps:
